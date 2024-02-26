@@ -21,14 +21,20 @@ public class SignUpPage extends WordlePageComponent{
     }
 
     public void signUpAs(Player player) {
+        signUpAs(player, true);
+    }
+
+        public void signUpAs(Player player, boolean clickCreateAccount) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(CREATE_ACCOUNT_BUTTON));
         driver.findElement(NAME_FIELD).sendKeys(player.name());
         driver.findElement(EMAIL_FIELD).sendKeys(player.email());
         driver.findElement(PASSWORD_FIELD).sendKeys(player.password());
         new Select(driver.findElement(COUNTRY_DROPDOWN)).selectByVisibleText("United Kingdom");
         driver.findElement(GAME_UPDATES_CHECKBOX).click();
-        driver.findElement(CREATE_ACCOUNT_BUTTON).click();
-    }
+            if (clickCreateAccount) {
+                driver.findElement(CREATE_ACCOUNT_BUTTON).click();
+            }    }
+
 
     public static SignUpPage withDriver(WebDriver driver) {
         return new SignUpPage(driver);
