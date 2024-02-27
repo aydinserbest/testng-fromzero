@@ -16,12 +16,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class RegisteringAsANewPlayer {
     WebDriver driver;
@@ -81,7 +83,7 @@ public class RegisteringAsANewPlayer {
 
         // Get the text from the error message and assert its content if it's displayed
         String errorMessage = toastError.getText();
-        Assert.assertEquals("Please enter a valid email!", errorMessage);
+        assertEquals("Please enter a valid email!", errorMessage);
     }
     @Test
     public void with_bad_password(){
@@ -109,7 +111,50 @@ public class RegisteringAsANewPlayer {
         //
         String text = driver.findElement(By.cssSelector(".text-sm.font-medium.text-red-700")).getText();
         assertThat(text).isEqualTo("At least 8 characters required");
+    }
+    @DataProvider(name = "invalidPasswords")
+    public static Object[][] invalidPasswords(){
+        return new Object[][] {
+                {"Short1@", "At least 8 characters required"},
+                {"invalid1@", "Password should contain with one uppercase"},
+                {"INVALID1@", "Password should contain with one lowercase"},
+                {"Invalid1", "Password should contain with one special character"},
+                {"Invalid@", "Password should contain with one number"}
+        };
+    }
+    @Test(dataProvider = "invalidPasswords")
+    public void testInvalidPassword(String password, String expectedMessage){
+        driver.get("http://localhost:5173/");
 
+        //Go to the Create account page
+        LoginPage.withDriver(driver).createAccount();
+
+        //Register a new user
+        SignUpPage.withDriver(driver).signUpAs(new Player("testuser", "testemail@example.com", password));
+        WebElement validationMessageElement = driver.findElement(By.cssSelector("span.text-red-700"));
+        String actualMessage = validationMessageElement.getText();
+        // Compare the actual validation message to the expected one from the data provider
+        assertEquals(actualMessage, expectedMessage, "The password validation message is incorrect.");
+    }
+    @Test(dataProvider = "invalidPasswords")
+    public void testInvalidPassword2(String password, String expectedMessage){
+        Player player = Player.somePlayer();
+        Player playerWithInvalidPassword = new Player(
+                player.name(),
+                player.email(),
+                password  // coming from dataProvider
+        );
+        driver.get("http://localhost:5173/");
+
+        //Go to the Create account page
+        LoginPage.withDriver(driver).createAccount();
+
+        //Register a new user
+        SignUpPage.withDriver(driver).signUpAs(playerWithInvalidPassword);
+        WebElement validationMessageElement = driver.findElement(By.cssSelector("span.text-red-700"));
+        String actualMessage = validationMessageElement.getText();
+        // Compare the actual validation message to the expected one from the data provider
+        assertEquals(actualMessage, expectedMessage, "The password validation message is incorrect.");
 
     }
 }
