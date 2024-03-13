@@ -4,11 +4,10 @@ import com.example.model.Player;
 import com.example.pageobjects.HowToPlayModal;
 import com.example.pageobjects.LoginPage;
 import com.example.pageobjects.SignUpPage;
+import com.example.pageobjects.WebDriverProvider;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -27,14 +26,13 @@ public class RegisteringAsANewPlayer {
 
     @BeforeMethod
     public void setupDriver() {
-        driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1200, 800));
+        driver = WebDriverProvider.getDriver();
         wait = new WebDriverWait(driver, Duration.of(5, ChronoUnit.SECONDS));
     }
 
     @AfterMethod
     public void closeDriver() {
-        driver.quit();
+        WebDriverProvider.quitDriver();
     }
 
     @Test(description = "A new player should be able to sign up by providing a name, a password and an email")

@@ -4,9 +4,8 @@ import com.example.model.Player;
 import com.example.pageobjects.LoginPage;
 import com.example.pageobjects.SignUpPage;
 import com.example.pageobjects.ToasterPopUp;
-import org.openqa.selenium.Dimension;
+import com.example.pageobjects.WebDriverProvider;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -26,14 +25,13 @@ public class ValidEmailRules {
 
     @BeforeMethod
     public void setupDriver() {
-        driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1200, 800));
+        driver = WebDriverProvider.getDriver();
         wait = new WebDriverWait(driver, Duration.of(5, ChronoUnit.SECONDS));
     }
 
     @AfterMethod
     public void closeDriver() {
-        driver.quit();
+        WebDriverProvider.quitDriver();
     }
 
     @Test
@@ -60,9 +58,7 @@ public class ValidEmailRules {
     @Test(dataProvider = "invalidEmails")
     public void signUp_with_invalid_emails_with_dataProvider(String email, String expectedMessage) {
         Player player = Player.somePlayer().withEmail(email);
-        driver.get("http://localhost:5173/");
-        //Go to the Create account page
-        LoginPage.withDriver(driver).createAccount();
+        driver.get("http://localhost:5173/signup");
         SignUpPage.withDriver(driver).signUpAs(player);
         ToasterPopUp toasterPopUp = new ToasterPopUp(driver);
         String errorMessage = toasterPopUp.getMessage();
