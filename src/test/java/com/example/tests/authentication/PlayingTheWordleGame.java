@@ -61,13 +61,13 @@ public class PlayingTheWordleGame {
         onScreenKeyboard.press("enter");
 
         //Should have 1 completed row
-        int completedRowCount = driver.findElements(By.cssSelector(".flex.justify-center.mb-1:has(.cell-fill-animation)")).size();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".completed-row")));
+        int completedRowCount = driver.findElements(By.cssSelector(".completed-row")).size();
         assertThat(completedRowCount).isEqualTo(1);
 
 
         //Should display the letters we entered
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".flex.justify-center.mb-1 .cell-fill-animation .letter-container")));
-        List<String> completedLetters = driver.findElements(By.cssSelector(".flex.justify-center.mb-1 .cell-fill-animation .letter-container"))
+        List<String> completedLetters = driver.findElements(By.cssSelector(".completed-row .letter-container"))
                 .stream().map(cell -> cell.getText())
                 .collect(Collectors.toList());
 
