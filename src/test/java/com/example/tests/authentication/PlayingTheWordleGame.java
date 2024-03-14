@@ -1,10 +1,7 @@
 package com.example.tests.authentication;
 
 import com.example.model.Player;
-import com.example.pageobjects.HowToPlayModal;
-import com.example.pageobjects.LoginPage;
-import com.example.pageobjects.SignUpPage;
-import com.example.pageobjects.WebDriverProvider;
+import com.example.pageobjects.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
@@ -48,7 +45,13 @@ public class PlayingTheWordleGame {
         WebDriverProvider.quitDriver();
     }
     @Test
-    public void shouldShowTheKeyboard(){
-
+    public void shouldBeAbleToEnterAWordUsingTheKeyboard(){
+        OnScreenKeyboard onScreenKeyboard = new OnScreenKeyboard(driver);
+        onScreenKeyboard.press("B");
+        onScreenKeyboard.press("E");
+        onScreenKeyboard.press("A");
+        onScreenKeyboard.press("S");
+        onScreenKeyboard.press("T");
+        onScreenKeyboard.press("enter");
     }
 }
