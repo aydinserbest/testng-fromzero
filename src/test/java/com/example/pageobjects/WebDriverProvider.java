@@ -16,7 +16,7 @@ public class WebDriverProvider {
         return THREADLOCAL_WEBDRIVER.get();
     }
     public static void quitDriver(){
-        if (THREADLOCAL_WEBDRIVER.get() == null) {
+        if (THREADLOCAL_WEBDRIVER.get() != null) {
             THREADLOCAL_WEBDRIVER.get().quit();
             THREADLOCAL_WEBDRIVER.remove();
         }
