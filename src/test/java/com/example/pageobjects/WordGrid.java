@@ -1,7 +1,10 @@
 package com.example.pageobjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WordGrid extends WordlePageComponent{
@@ -25,7 +28,9 @@ public class WordGrid extends WordlePageComponent{
                 .collect(Collectors.toList());
      */
     public List<String> getCompletedWords() {
-        //List<WebElement>
+        List<String> words = new ArrayList<>();
+        List<WebElement> completedWordElements = driver.findElements(By.cssSelector(".completed-row"));
+
         return null;
     }
 }
