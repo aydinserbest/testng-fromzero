@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -60,18 +59,12 @@ public class PlayingTheWordleGame {
         onScreenKeyboard.press("T");
         onScreenKeyboard.press("enter");
 
-        //Should have 1 completed row
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".completed-row")));
-        int completedRowCount = driver.findElements(By.cssSelector(".completed-row")).size();
-        assertThat(completedRowCount).isEqualTo(1);
 
 
-        //Should display the letters we entered
-        List<String> completedLetters = driver.findElements(By.cssSelector(".completed-row .letter-container"))
-                .stream().map(cell -> cell.getText())
-                .collect(Collectors.toList());
 
-        assertThat(completedLetters).containsExactly("B", "E", "A", "S", "T");
+        //Read the rendered words on the grid
+        List<String> words = WordGrid.withDriver(driver).getCompletedWords();
+        assertThat(words).hasSize(1).containsExactly("BEAST");
 
     }
 }
