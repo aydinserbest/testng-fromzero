@@ -30,6 +30,9 @@ public class WordGrid extends WordlePageComponent{
     public List<String> getCompletedWords() {
         List<String> words = new ArrayList<>();
         List<WebElement> completedWordElements = driver.findElements(By.cssSelector(".completed-row"));
+        for (WebElement element : completedWordElements) {
+            words.add(element.getText());
+        }
 
         return null;
     }
