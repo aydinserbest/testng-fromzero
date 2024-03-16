@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 
-public class SignUpPage extends WordlePageComponent{
+public class SignUpPage extends BaseUIInteractions {
 
     private static final By CREATE_ACCOUNT_BUTTON = By.id("create-account");
     private static final By NAME_FIELD = By.id("name");

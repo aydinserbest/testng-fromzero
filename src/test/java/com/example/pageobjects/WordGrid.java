@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WordGrid extends WordlePageComponent {
+public class WordGrid extends BaseUIInteractions {
     public WordGrid(WebDriver driver) {
         super(driver);
     }

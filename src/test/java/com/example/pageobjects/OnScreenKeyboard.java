@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class OnScreenKeyboard extends WordlePageComponent {
+public class OnScreenKeyboard extends BaseUIInteractions {
 
     public OnScreenKeyboard(WebDriver driver) {
         super(driver);

@@ -1,12 +1,11 @@
 package com.example.tests.authentication;
 
+import com.example.actions.GameActions;
 import com.example.model.Player;
 import com.example.pageobjects.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +18,7 @@ public class PlayingTheWordleGame {
     WebDriverWait wait;
     Player player;
 
-    @BeforeMethod
+    @BeforeClass
     void registerAndStartTheGame(){
         driver = WebDriverProvider.getDriver();
         wait = new WebDriverWait(driver, Duration.of(5, ChronoUnit.SECONDS));
@@ -43,48 +42,36 @@ public class PlayingTheWordleGame {
         howToPlayModal.closeModal();
     }
 
-    @AfterMethod
+    @AfterClass
     public void closeDriver() {
         WebDriverProvider.quitDriver();
     }
+    @BeforeMethod
+    void startTheGame(){
+        ToasterPopUp toasterPopUp = new ToasterPopUp(driver);
+        toasterPopUp.closeIfVisible();
+
+        TopBar topBar = new TopBar(driver);
+        topBar.newGame();
+    }
+
     @Test
     public void shouldBeAbleToEnterAWordUsingTheKeyboard(){
-        OnScreenKeyboard onScreenKeyboard = new OnScreenKeyboard(driver);
-//        onScreenKeyboard.press("B");
-//        onScreenKeyboard.press("E");
-//        onScreenKeyboard.press("A");
-//        onScreenKeyboard.press("S");
-//        onScreenKeyboard.press("T");
-//        onScreenKeyboard.press("enter");
-        onScreenKeyboard.press("A");
-        onScreenKeyboard.press("N");
-        onScreenKeyboard.press("G");
-        onScreenKeyboard.press("L");
-        onScreenKeyboard.press("E");
-        onScreenKeyboard.press("enter");
+        GameActions gameActions = new GameActions(driver);
+        gameActions.playWord("ANGEL");
 
         List<String> words = WordGrid.withDriver(driver).getCompletedWords();
-        assertThat(words).hasSize(1).containsExactly("ANGLE");
+        assertThat(words).hasSize(1).containsExactly("ANGEL");
 
     }
     @Test
     public void shouldBeAbleToEnterMultipleWordsUsingTheKeyboard(){
-        OnScreenKeyboard onScreenKeyboard = new OnScreenKeyboard(driver);
-        onScreenKeyboard.press("B");
-        onScreenKeyboard.press("E");
-        onScreenKeyboard.press("A");
-        onScreenKeyboard.press("S");
-        onScreenKeyboard.press("T");
-        onScreenKeyboard.press("enter");
-        onScreenKeyboard.press("A");
-        onScreenKeyboard.press("N");
-        onScreenKeyboard.press("G");
-        onScreenKeyboard.press("L");
-        onScreenKeyboard.press("E");
-        onScreenKeyboard.press("enter");
+        GameActions gameActions = new GameActions(driver);
+        gameActions.playWord("BEAST");
+        gameActions.playWord("ANGEL");
 
         List<String> words = WordGrid.withDriver(driver).getCompletedWords();
-        assertThat(words).hasSize(2).containsExactly("BEAST", "ANGLE");
+        assertThat(words).hasSize(2).containsExactly("BEAST", "ANGEL");
     }
     @Test
     public void shouldBeAbleToEnterNUsingTheKeyboard(){
@@ -95,6 +82,7 @@ public class PlayingTheWordleGame {
         onScreenKeyboard.press("E");
         onScreenKeyboard.press("L");
         onScreenKeyboard.press("enter");
+
         onScreenKeyboard.press("S");
         onScreenKeyboard.press("A");
         onScreenKeyboard.press("I");

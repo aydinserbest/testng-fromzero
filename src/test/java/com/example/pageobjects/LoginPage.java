@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class LoginPage extends WordlePageComponent{
+public class LoginPage extends BaseUIInteractions {
     private static final By CREATE_ACCOUNT_BUTTON = By.linkText("Create Account");
     private static final By NAME_FIELD = By.id("name");
     private static final By PASSWORD_FIELD = By.id("password");
