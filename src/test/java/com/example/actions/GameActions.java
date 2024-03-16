@@ -16,4 +16,10 @@ public class GameActions extends BaseUIInteractions {
         }
         onScreenKeyboard.press("enter");
     }
+
+    public void playWords(String... wordList) {
+        for (String word : wordList) {
+            playWord(word);
+        }
+    }
 }

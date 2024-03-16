@@ -74,23 +74,11 @@ public class PlayingTheWordleGame {
         assertThat(words).hasSize(2).containsExactly("BEAST", "ANGEL");
     }
     @Test
-    public void shouldBeAbleToEnterNUsingTheKeyboard(){
-        OnScreenKeyboard onScreenKeyboard = new OnScreenKeyboard(driver);
-        onScreenKeyboard.press("A");
-        onScreenKeyboard.press("N");
-        onScreenKeyboard.press("G");
-        onScreenKeyboard.press("E");
-        onScreenKeyboard.press("L");
-        onScreenKeyboard.press("enter");
-
-        onScreenKeyboard.press("S");
-        onScreenKeyboard.press("A");
-        onScreenKeyboard.press("I");
-        onScreenKeyboard.press("N");
-        onScreenKeyboard.press("T");
-        onScreenKeyboard.press("enter");
+    public void shouldBeAbleToEnterMultipleWordsUsingTheKeyboard2(){
+        GameActions gameActions = new GameActions(driver);
+        gameActions.playWords("BEAST","ANGEL","SAINT");
 
         List<String> words = WordGrid.withDriver(driver).getCompletedWords();
-        assertThat(words).hasSize(2).containsExactly("ANGEL", "SAINT");
+        assertThat(words).hasSize(3).containsExactly("BEAST", "ANGEL", "SAINT");
     }
 }
