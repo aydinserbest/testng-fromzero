@@ -5,7 +5,7 @@ import com.example.pageobjects.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -19,7 +19,7 @@ public class PlayingTheWordleGame {
     WebDriverWait wait;
     Player player;
 
-    @BeforeClass
+    @BeforeMethod
     void registerAndStartTheGame(){
         driver = WebDriverProvider.getDriver();
         wait = new WebDriverWait(driver, Duration.of(5, ChronoUnit.SECONDS));
@@ -64,7 +64,7 @@ public class PlayingTheWordleGame {
         onScreenKeyboard.press("enter");
 
         List<String> words = WordGrid.withDriver(driver).getCompletedWords();
-        assertThat(words).hasSize(1).containsExactly("BEAST");
+        assertThat(words).hasSize(1).containsExactly("ANGLE");
 
     }
     @Test
@@ -103,6 +103,6 @@ public class PlayingTheWordleGame {
         onScreenKeyboard.press("enter");
 
         List<String> words = WordGrid.withDriver(driver).getCompletedWords();
-        assertThat(words).hasSize(2).containsExactly("BEAST", "ANGLE");
+        assertThat(words).hasSize(2).containsExactly("ANGEL", "SAINT");
     }
 }
