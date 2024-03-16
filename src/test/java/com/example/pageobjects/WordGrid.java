@@ -3,11 +3,12 @@ package com.example.pageobjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class WordGrid extends WordlePageComponent{
+public class WordGrid extends WordlePageComponent {
     public WordGrid(WebDriver driver) {
         super(driver);
     }
@@ -15,26 +16,47 @@ public class WordGrid extends WordlePageComponent{
     public static WordGrid withDriver(WebDriver driver) {
         return new WordGrid(driver);
     }
-    /*
 
-    //Should have 1 completed row
+    public List<String> getCompletedWords() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".completed-row")));
-        int completedRowCount = driver.findElements(By.cssSelector(".completed-row")).size();
-        assertThat(completedRowCount).isEqualTo(1);
-
-
-    List<String> completedLetters = driver.findElements(By.cssSelector(".completed-row .letter-container"))
-                .stream().map(cell -> cell.getText())
+        return driver.findElements(By.cssSelector(".completed-row")).stream()
+                .map(row -> row.findElements(By.cssSelector(".letter-container")).stream()
+                        .map(WebElement::getText)
+                        .collect(Collectors.joining()))
                 .collect(Collectors.toList());
-     */
+    }
+    /*
+    we can write also like these 2 styles the method above:
+     1-
     public List<String> getCompletedWords() {
         List<String> words = new ArrayList<>();
-        List<WebElement> completedWordElements = driver.findElements(By.cssSelector(".completed-row"));
-        for (WebElement element : completedWordElements) {
-            words.add(element.getText());
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".completed-row")));
+        List<WebElement> completedLetters
+                = driver.findElements(By.cssSelector(".completed-row"));
 
-        return null;
+        for (WebElement letterContainer : completedLetters) {
+            List<WebElement> letterContainers = letterContainer.findElements(By.cssSelector(".letter-container"));
+            StringBuilder word = new StringBuilder();
+            for (WebElement letter : letterContainers) {
+                word.append(letter.getText());
+            }
+            words.add(word.toString());
+        }
+        2-
+        public List<String> getCompletedWords() {
+        return driver.findElements(By.cssSelector(".completed-row")).stream()
+                .map(row -> row.findElements(By.cssSelector(".letter-container")).stream()
+                        .map(WebElement::getText)
+                        .reduce(String::concat)
+                        .orElse(""))
+                        .toList();
     }
+     */
+    /*
+    public boolean isWordPresent(String word) {
+        List<String> completedWords = getCompletedWords();
+        return completedWords.contains(word);
+    }
+     */
 }
 
